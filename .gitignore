@@ -1,0 +1,6 @@
+*.class
+*/build/*
+*/bin/*
+*gradle*
+.vscode/settings.json
+*.bat
