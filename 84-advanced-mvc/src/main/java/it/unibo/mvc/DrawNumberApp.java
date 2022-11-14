@@ -1,44 +1,65 @@
 package it.unibo.mvc;
 
+import java.io.BufferedReader;
 import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.io.InputStreamReader;
 import java.util.Arrays;
 import java.util.List;
 
 /**
  */
 public final class DrawNumberApp implements DrawNumberViewObserver {
-    private static final int MIN = 0;
-    private static final int MAX = 100;
-    private static final int ATTEMPTS = 10;
+    private Configuration c = new Configuration(0, 100, 10);
 
     private final DrawNumber model;
     private final List<DrawNumberView> views;
 
     /**
      * @param views
-     *            the views to attach
+     *              the views to attach
+     * @throws IOException
+     * @throws FileNotFoundException
      */
-    public DrawNumberApp(final DrawNumberView... views) {
+    public DrawNumberApp(String path, final DrawNumberView... views) throws FileNotFoundException, IOException {
+        try (final BufferedReader r = new BufferedReader (new InputStreamReader(ClassLoader.getSystemResourceAsStream(path)))) {
+            String[] s = new String[3];
+            for (int i = 0; i < 3; i++) {
+                s[i] = r.readLine();
+                if (s[i].startsWith("minimum: ")){
+                    c.setMin(Integer.parseInt(s[i].substring(9)));
+                }
+                else if (s[i].startsWith("maximum: ")){
+                    c.setMax(Integer.parseInt(s[i].substring(9)));
+                }
+                else if (s[i].startsWith("attempts: ")){
+                    c.setAttempts(Integer.parseInt(s[i].substring(10)));
+                }
+                else{
+                    throw new IllegalStateException("config file content not recognized");
+                }
+            }
+        }
         /*
          * Side-effect proof
          */
         this.views = Arrays.asList(Arrays.copyOf(views, views.length));
-        for (final DrawNumberView view: views) {
+        for (final DrawNumberView view : views) {
             view.setObserver(this);
             view.start();
         }
-        this.model = new DrawNumberImpl(MIN, MAX, ATTEMPTS);
+        this.model = new DrawNumberImpl(c.getMin(), c.getMax(), c.getAttempts());
     }
 
     @Override
     public void newAttempt(final int n) {
         try {
             final DrawResult result = model.attempt(n);
-            for (final DrawNumberView view: views) {
+            for (final DrawNumberView view : views) {
                 view.result(result);
             }
         } catch (IllegalArgumentException e) {
-            for (final DrawNumberView view: views) {
+            for (final DrawNumberView view : views) {
                 view.numberIncorrect();
             }
         }
@@ -62,11 +83,12 @@ public final class DrawNumberApp implements DrawNumberViewObserver {
 
     /**
      * @param args
-     *            ignored
-     * @throws FileNotFoundException 
+     *             ignored
+     * @throws IOException
      */
-    public static void main(final String... args) throws FileNotFoundException {
-        new DrawNumberApp(new DrawNumberViewImpl());
+    public static void main(final String... args) throws IOException {
+
+        new DrawNumberApp("config.yml", new DrawNumberViewImpl(), new DrawNumberViewImpl(), new PrintStreamView(System.out), new PrintStreamView("output.log"));
     }
 
 }

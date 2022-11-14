@@ -4,3 +4,4 @@
 *gradle*
 .vscode/settings.json
 *.bat
+*.log
