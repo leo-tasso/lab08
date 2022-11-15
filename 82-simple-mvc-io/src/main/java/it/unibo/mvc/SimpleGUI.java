@@ -4,7 +4,8 @@ import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 
-import java.awt.*;
+import java.awt.Dimension;
+import java.awt.Toolkit;
 import java.awt.BorderLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -21,20 +22,25 @@ public final class SimpleGUI {
     private final Controller cont;
     private final JFrame frame = new JFrame();
 
-    public SimpleGUI(Controller c) {
+    /**
+     * constructor.
+     * 
+     * @param c controller to operate.
+     */
+    private SimpleGUI(final Controller c) {
         this.cont = c;
-        JPanel panel = new JPanel(new BorderLayout());
-        JTextArea area = new JTextArea();
-        JButton save = new JButton("Save");
+        final JPanel panel = new JPanel(new BorderLayout());
+        final JTextArea area = new JTextArea();
+        final JButton save = new JButton("Save");
         save.addActionListener(new ActionListener() {
             @Override
-            public void actionPerformed(ActionEvent e) {
-                int n = JOptionPane.showConfirmDialog(frame, "Save?", "Saving", JOptionPane.YES_NO_OPTION);
+            public void actionPerformed(final ActionEvent e) {
+                final int n = JOptionPane.showConfirmDialog(frame, "Save?", "Saving", JOptionPane.YES_NO_OPTION);
                 if (n == JOptionPane.YES_OPTION) {
                     try {
                         cont.write(area.getText());
                     } catch (IOException e1) {
-                        System.err.println("Error while writing");
+                        System.err.println("Error while writing"); //NOPMD
                     }
                 }
             }
@@ -50,11 +56,20 @@ public final class SimpleGUI {
         frame.setLocationByPlatform(true);
     }
 
+    /**
+     * displays the output window.
+     */
     public void display() {
         frame.setVisible(true);
     }
 
-    public static void main(String[] args) {
+    /**
+     * Executes the program.
+     * 
+     * @param args useless.
+     * 
+     */
+    public static void main(final String[] args) {
         new SimpleGUI(new Controller()).display();
 
     }
