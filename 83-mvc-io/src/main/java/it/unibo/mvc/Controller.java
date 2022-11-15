@@ -6,12 +6,25 @@ import java.util.List;
  *
  */
 public interface Controller {
-    public void setnext(String nexString);
+    /**
+     * sets next string to print.
+     * @param nexString the string to print.
+     */
+     void setnext(String nexString);
+     /**
+      * returns the next string to print.
+      * @return the next strig to print.
+      */
+     String getnext();
+    /**
+     * returns a list of the printed strings.
+     * @return a list of the printed strings.
+     */
+     List<String> getHistory();
 
-    public String getnext();
-
-    public List<String> getHistory();
-
-    public void print();
+     /**
+      * prints the staged string.
+     */
+     void print();
 
 }

@@ -41,6 +41,7 @@ public final class SimpleGUIWithFileChooser {
             @Override
             public void actionPerformed(final ActionEvent e) {
                 final JFileChooser fc = new JFileChooser();
+                fc.setCurrentDirectory(cont.getFile());
                 final int result = fc.showSaveDialog(frame);
                 if (result == JFileChooser.APPROVE_OPTION) {
                     cont.setFile(fc.getSelectedFile());
