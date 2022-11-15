@@ -4,13 +4,16 @@ import java.io.BufferedReader;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.nio.charset.StandardCharsets;
 import java.util.Arrays;
 import java.util.List;
 
 /**
  */
 public final class DrawNumberApp implements DrawNumberViewObserver {
-    private Configuration c = new Configuration(0, 100, 10);
+    private static final int MAXANDMINCHARS = 9;
+
+    private final Configuration c = new Configuration(0, 100, 10);
 
     private final DrawNumber model;
     private final List<DrawNumberView> views;
@@ -20,22 +23,21 @@ public final class DrawNumberApp implements DrawNumberViewObserver {
      *              the views to attach
      * @throws IOException
      * @throws FileNotFoundException
+     * @param path the path of the config
      */
-    public DrawNumberApp(String path, final DrawNumberView... views) throws FileNotFoundException, IOException {
-        try (final BufferedReader r = new BufferedReader (new InputStreamReader(ClassLoader.getSystemResourceAsStream(path)))) {
+    public DrawNumberApp(final String path, final DrawNumberView... views) throws FileNotFoundException, IOException {
+        try (BufferedReader r = new BufferedReader(
+                new InputStreamReader(ClassLoader.getSystemResourceAsStream(path), StandardCharsets.UTF_8))) {
             String[] s = new String[3];
             for (int i = 0; i < 3; i++) {
                 s[i] = r.readLine();
-                if (s[i].startsWith("minimum: ")){
-                    c.setMin(Integer.parseInt(s[i].substring(9)));
-                }
-                else if (s[i].startsWith("maximum: ")){
-                    c.setMax(Integer.parseInt(s[i].substring(9)));
-                }
-                else if (s[i].startsWith("attempts: ")){
+                if (s[i].startsWith("minimum: ")) {
+                    c.setMin(Integer.parseInt(s[i].substring(MAXANDMINCHARS)));
+                } else if (s[i].startsWith("maximum: ")) {
+                    c.setMax(Integer.parseInt(s[i].substring(MAXANDMINCHARS)));
+                } else if (s[i].startsWith("attempts: ")) {
                     c.setAttempts(Integer.parseInt(s[i].substring(10)));
-                }
-                else{
+                } else {
                     throw new IllegalStateException("config file content not recognized");
                 }
             }
@@ -88,7 +90,8 @@ public final class DrawNumberApp implements DrawNumberViewObserver {
      */
     public static void main(final String... args) throws IOException {
 
-        new DrawNumberApp("config.yml", new DrawNumberViewImpl(), new DrawNumberViewImpl(), new PrintStreamView(System.out), new PrintStreamView("output.log"));
+        new DrawNumberApp("config.yml", new DrawNumberViewImpl(), new DrawNumberViewImpl(),
+                new PrintStreamView(System.out), new PrintStreamView("output.log"));
     }
 
 }

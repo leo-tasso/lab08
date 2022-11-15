@@ -16,7 +16,10 @@ public final class DrawNumberImpl implements DrawNumber {
 
     /**
      * @throws IllegalStateException if the configuration is not consistent
-     */
+     * @param min minimum range
+     * @param max maximum range
+     * @param attempts maximum attempts
+     * */
     public DrawNumberImpl(final int min, final int max, final int attempts) {
         this.min = min;
         this.max = max;

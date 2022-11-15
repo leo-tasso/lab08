@@ -6,7 +6,7 @@ package it.unibo.mvc;
 public interface DrawNumberView {
 
     /**
-     * @param observer the controller to attach
+     * @param observer the controller to attach.
      */
     void setObserver(DrawNumberViewObserver observer);
 
@@ -25,9 +25,9 @@ public interface DrawNumberView {
      */
     void result(DrawResult res);
     /**
-     * Display an error
+     * Display an error.
      * 
-     * @param n the message error to display
+     * @param message the message error to display
      */
     void displayError(String message);
 }

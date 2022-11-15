@@ -1,6 +1,7 @@
 plugins {
     application
     java
+    //id("org.danilopianini.gradle-java-qa") version "0.40.0"
 }
 
 repositories {
@@ -9,4 +10,8 @@ repositories {
 
 application {
     mainClass.set("it.unibo.mvc.DrawNumberApp")
+}
+
+tasks.javadoc {
+    isFailOnError = false
 }
