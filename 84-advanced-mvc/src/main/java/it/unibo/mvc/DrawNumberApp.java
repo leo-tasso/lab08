@@ -57,11 +57,11 @@ public final class DrawNumberApp implements DrawNumberViewObserver {
     public void newAttempt(final int n) {
         try {
             final DrawResult result = model.attempt(n);
-            for (final DrawNumberView view : views) {
+            for (final DrawNumberView view: views) {
                 view.result(result);
             }
         } catch (IllegalArgumentException e) {
-            for (final DrawNumberView view : views) {
+            for (final DrawNumberView view: views) {
                 view.numberIncorrect();
             }
         }
