@@ -8,6 +8,8 @@ import java.nio.charset.StandardCharsets;
 import java.util.Arrays;
 import java.util.List;
 
+import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
+
 /**
  */
 public final class DrawNumberApp implements DrawNumberViewObserver {
@@ -73,6 +75,7 @@ public final class DrawNumberApp implements DrawNumberViewObserver {
     }
 
     @Override
+    @SuppressFBWarnings
     public void quit() {
         /*
          * A bit harsh. A good application should configure the graphics to exit by

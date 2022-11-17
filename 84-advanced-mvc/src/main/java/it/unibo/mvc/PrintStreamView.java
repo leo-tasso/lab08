@@ -6,6 +6,7 @@ package it.unibo.mvc;
 import java.io.IOException;
 import java.io.PrintStream;
 import java.nio.charset.StandardCharsets;
+import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 
 /**
  * This class implements a view that can write on any PrintStream.
@@ -19,6 +20,7 @@ public final class PrintStreamView implements DrawNumberView {
      *
      * @param stream the {@link PrintStream} where to write
      */
+    @SuppressFBWarnings()
     public PrintStreamView(final PrintStream stream) {
         out = stream;
     }
